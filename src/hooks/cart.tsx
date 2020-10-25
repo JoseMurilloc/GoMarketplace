@@ -30,15 +30,34 @@ const CartProvider: React.FC = ({ children }) => {
 
   useEffect(() => {
     async function loadProducts(): Promise<void> {
-      // TODO LOAD ITEMS FROM ASYNC STORAGE
+
+      const productStorage = await AsyncStorage.getItem('@Marker/products');
+
+      if (productStorage) {
+        setProducts(JSON.parse(productStorage));
+      }
     }
 
     loadProducts();
   }, []);
 
   const addToCart = useCallback(async product => {
-    // TODO ADD A NEW ITEM TO THE CART
-  }, []);
+
+    const productsExists = products.find(p => p.id === product.id);
+
+    if (productsExists){
+      setProducts(
+        products.map(p => p.id === product.id ? { ...productsExists, quantity: p.quantity + 1 } : p)
+      )
+    } else {
+      setProducts([...products, {...product, quantity: 1}])
+    }
+
+
+    setProducts([...products, product]);
+
+    await AsyncStorage.setItem('@Marker/products', JSON.stringify(products));
+  }, [products]);
 
   const increment = useCallback(async id => {
     // TODO INCREMENTS A PRODUCT QUANTITY IN THE CART
