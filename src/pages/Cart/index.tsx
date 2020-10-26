@@ -51,7 +51,7 @@ const Cart: React.FC = () => {
       const subTotalProducts = product.price * product.quantity;
 
       return subTotalProducts + accumulator;
-    }, 0)
+    }, 0);
 
     return formatValue(total);
   }, [products]);
@@ -59,9 +59,7 @@ const Cart: React.FC = () => {
   const totalItensInCart = useMemo(() => {
     const total = products.reduce((accumulator, product) => {
       return accumulator + product.quantity;
-    }, 0)
-
-    isNaN(total);
+    }, 0);
 
     return total;
   }, [products]);
